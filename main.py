@@ -39,7 +39,7 @@ async def list_cards(request):
   ]
   return JSONResponse(content)
 
-async def update_card(request):
+async def update_cards(request):
   data = await request.json()
   cards_info = data["data"]
 
@@ -65,7 +65,7 @@ async def update_card(request):
 
 routes = [
   Route("/cards", endpoint=list_cards, methods=["GET"]),
-  Route("/cards", endpoint=update_card, methods=["PATCH"]),
+  Route("/cards", endpoint=update_cards, methods=["PATCH"]),
 ]
 
 middleware = [
