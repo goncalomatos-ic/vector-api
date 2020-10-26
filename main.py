@@ -26,6 +26,28 @@ cards = sqlalchemy.Table(
 
 database = databases.Database(DATABASE_URL)
 
+# 'Upsert' a card
+async def add_card(request):
+  data = await request.json()
+  card_info = data["data"]
+
+  insert_stmt = insert(cards).values(title=card["title"], type=card["type"], position=card["position"])
+  query = insert_stmt.on_conflict_do_update(
+    index_elements=['position'],
+    set_=dict(title=card["title"], type=card["type"])
+  )
+  await database.execute(query)
+
+  return JSONResponse(data)
+
+# Delete card by id
+async def delete_card (request):
+  card_id = request.path_params['user_id']
+  delete_query = cards.delete().where(cards.c.id==card_id)
+  await database.execute(delete_query)
+  return JSONResponse(card_info)
+
+# Get all cards
 async def list_cards(request):
   query = cards.select()
   results = await database.fetch_all(query)
@@ -39,6 +61,8 @@ async def list_cards(request):
   ]
   return JSONResponse(content)
 
+# Updates cards according to payload
+# May remove, add or update existing cards
 async def update_cards(request):
   data = await request.json()
   cards_info = data["data"]
@@ -65,6 +89,8 @@ async def update_cards(request):
 
 routes = [
   Route("/cards", endpoint=list_cards, methods=["GET"]),
+  Route("/cards", endpoint=add_card, methods=["POST"]),
+  Route("/cards/{card_id:int}", endpoint=delete_card, methods=["DELETE"]),
   Route("/cards", endpoint=update_cards, methods=["PATCH"]),
 ]
 
