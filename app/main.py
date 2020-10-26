@@ -36,10 +36,16 @@ async def list_cards(request):
 
 async def update_cards(request):
     data = await request.json()
-    query = cards.insert().values(
+    query = cards.update().values(
        title=data["title"],
-       type=data["completed"]
+       type=data["type"]
     )
+    query = cards.insert().values(title=data["title"], type=data["type"], position=data["position"])
+    query = query.on_conflict_do_update(
+      iconstraint='position',
+      set_=dict(data=data)
+    )
+
     await database.execute(query)
     return JSONResponse({
         "text": data["text"],

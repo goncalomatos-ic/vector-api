@@ -13,7 +13,7 @@ def upgrade():
       sqlalchemy.Column("id", sqlalchemy.Integer, primary_key=True),
       sqlalchemy.Column("title", sqlalchemy.String),
       sqlalchemy.Column("type", sqlalchemy.String),
-      sqlalchemy.Column("position", sqlalchemy.Integer),
+      sqlalchemy.Column("position", sqlalchemy.Integer, unique=True),
       sqlalchemy.Column("created_at", sqlalchemy.DateTime),
       sqlalchemy.Column("updated_at", sqlalchemy.DateTime),
     )
