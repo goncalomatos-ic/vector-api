@@ -4,6 +4,7 @@ from starlette.routing import Route
 from starlette.config import Config
 from starlette.middleware import Middleware
 from starlette.middleware.cors import CORSMiddleware
+from sqlalchemy.dialects.postgresql import insert
 import databases
 import sqlalchemy
 
@@ -38,31 +39,37 @@ async def list_cards(request):
   ]
   return JSONResponse(content)
 
-async def update_cards(request):
+async def update_card(request):
   data = await request.json()
-  query = cards.update().values(
-      title=data["title"],
-      type=data["type"]
-  )
-  query = cards.insert().values(title=data["title"], type=data["type"], position=data["position"])
-  query = query.on_conflict_do_update(
-    iconstraint='position',
-    set_=dict(data=data)
-  )
+  cards_info = data["data"]
 
-  await database.execute(query)
-  return JSONResponse({
-      "text": data["text"],
-      "completed": data["completed"]
-  })
+  # Get cards positions (that is unique) to remove the ones
+  # not included in the payload
+  cards_positions = []
+
+  # Insert or update
+  for card in cards_info:
+    cards_positions.append(card["position"])
+    insert_stmt = insert(cards).values(title=card["title"], type=card["type"], position=card["position"])
+    query = insert_stmt.on_conflict_do_update(
+      index_elements=['position'],
+      set_=dict(title=card["title"], type=card["type"])
+    )
+    await database.execute(query)
+
+  # Delete cards that aren't on the payload
+  delete_query = cards.delete().where(cards.c.position.notin_(cards_positions))
+  await database.execute(delete_query)
+
+  return JSONResponse(cards_info)
 
 routes = [
   Route("/cards", endpoint=list_cards, methods=["GET"]),
-  Route("/cards", endpoint=update_cards, methods=["PATCH"]),
+  Route("/cards", endpoint=update_card, methods=["PATCH"]),
 ]
 
 middleware = [
-    Middleware(CORSMiddleware, allow_origins=['*'])
+    Middleware(CORSMiddleware, allow_origins=['*'], allow_methods=['*'])
 ]
 
 

@@ -1,5 +1,6 @@
 from alembic import op
 import sqlalchemy
+import datetime
 
 revision = '33eaf9192683'
 down_revision = None
@@ -14,8 +15,8 @@ def upgrade():
       sqlalchemy.Column("title", sqlalchemy.String),
       sqlalchemy.Column("type", sqlalchemy.String),
       sqlalchemy.Column("position", sqlalchemy.Integer, unique=True),
-      sqlalchemy.Column("created_at", sqlalchemy.DateTime),
-      sqlalchemy.Column("updated_at", sqlalchemy.DateTime),
+      sqlalchemy.Column("created_at", sqlalchemy.DateTime, default=datetime.datetime.utcnow),
+      sqlalchemy.Column("updated_at", sqlalchemy.DateTime, default=datetime.datetime.utcnow),
     )
 
 def downgrade():
