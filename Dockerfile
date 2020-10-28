@@ -1,14 +1,17 @@
-FROM tiangolo/uvicorn-gunicorn-starlette:python3.7
+# set base image (host OS)
+FROM python:3.8
 
-# Install Poetry
-RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | POETRY_HOME=/opt/poetry python && \
-    cd /usr/local/bin && \
-    ln -s /opt/poetry/bin/poetry && \
-    poetry config virtualenvs.create false
+# set the working directory in the container
+WORKDIR /vector-api
 
-# Copy using poetry.lock* in case it doesn't exist yet
-COPY ./app/pyproject.toml ./app/poetry.lock* /app/
+# copy the dependencies file to the working directory
+COPY requirements.txt .
 
-RUN poetry install --no-root --no-dev
+# install dependencies
+RUN pip install -r requirements.txt
 
-COPY ./app /app
+# copy the content of the local src directory to the working directory
+COPY src/ .
+
+# command to run on container start
+CMD [ "uvicorn", "main:app" ]
