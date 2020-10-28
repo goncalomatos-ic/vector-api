@@ -1,14 +1,14 @@
 # set base image (host OS)
 FROM python:3.8
-
 # set the working directory in the container
 WORKDIR /vector-api
 
-# copy the dependencies file to the working directory
-COPY requirements.txt .
+ADD setup_api.sh /
+
+COPY . .
 
 # install dependencies
 RUN pip install -r requirements.txt
 
-# command to run on container start
-CMD [ "uvicorn", "main:app" ]
+RUN chmod +x /setup_api.sh
+RUN /setup_api.sh
