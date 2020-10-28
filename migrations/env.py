@@ -21,7 +21,7 @@ fileConfig(config.config_file_name)
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-config.set_main_option('sqlalchemy.url', 'postgres://goncalomatos@localhost:5432/cards')
+config.set_main_option('sqlalchemy.url', 'postgres://root:root@db:5432/cards')
 target_metadata = sqlalchemy.MetaData()
 
 
