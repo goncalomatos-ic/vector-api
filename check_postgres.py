@@ -1,7 +1,12 @@
 import time
 import os
+from dotenv import load_dotenv
+load_dotenv()
 
-hostname = '0.0.0.0:5432'
+print(os.getenv("POSTGRES_IP"))
+
+postgres_ip = '' + os.getenv("POSTGRES_IP")
+hostname = postgres_ip + ':5432'
 
 response = os.system("ping -c 1 " + hostname)
 
