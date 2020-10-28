@@ -1,7 +1,7 @@
 import time
 import os
 
-hostname = '127.0.0.1:5432'
+hostname = '0.0.0.0:5432'
 
 response = os.system("ping -c 1 " + hostname)
 
