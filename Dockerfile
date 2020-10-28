@@ -8,10 +8,10 @@ COPY . .
 # install dependencies
 RUN pip install -r requirements.txt
 
-ADD setup_api.sh /
-
 ADD check_postgres.py /
+RUN chmod +x /check_postgres.py
+RUN python check_postgres.py
 
+ADD setup_api.sh /
 RUN chmod +x /setup_api.sh
-
 CMD sh /setup_api.sh
