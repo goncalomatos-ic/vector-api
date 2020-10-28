@@ -1,7 +1,7 @@
 python check_postgres.py
 
 echo "Running migrations..."
-alembic upgrade hea
+alembic upgrade head
 
 echo "Starting server..."
 
