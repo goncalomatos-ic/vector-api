@@ -3,7 +3,7 @@ import time
 #from dotenv import load_dotenv
 #load_dotenv()
 
-time.sleep(30)
+time.sleep(10)
 
 #response = os.system("ping -c 1 " + os.getenv("POSTGRES_IP"))
 
