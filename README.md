@@ -21,11 +21,21 @@ This is a very simple API and the MVP does not have a web interface (i.e. Swagge
 ### Add a card
 ```
 /cards [POST] (Add card's JSON to body)
+
+JSON body example:
+
+{"type": "bank-draft", "title": "Bank Draft", "position": 0}
 ```
 
 ### Update cards
 ```
 /cards [PATCH] (Add cards' JSON to body)
+
+JSON body example:
+
+[{"type": "bank-draft", "title": "Bank Draft", "position": 0},
+ {"type": "bill-of-lading", "title": "Bill of Lading", "position": 1 }, 
+ ...]
 ```
 
 ## Install
