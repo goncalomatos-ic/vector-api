@@ -12,4 +12,5 @@ ADD check_postgres.py /
 
 ADD setup_api.sh /
 RUN chmod +x /setup_api.sh
+EXPOSE 8000
 CMD sh /setup_api.sh
