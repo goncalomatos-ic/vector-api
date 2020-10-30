@@ -3,6 +3,31 @@
 This is Python3.8 + [Starlette](https://www.starlette.io/) api, running on a [Uvicorn](https://www.uvicorn.org/) ASGI server.
 The SQL Toolkit for this api is PostgreSQL, which is managed by [SQLAlchemy](https://www.sqlalchemy.org/) + [Alembic](https://alembic.sqlalchemy.org/en/latest/)
 
+This is a very simple API and the MVP does not have a web interface (i.e. Swagger)
+[Postman](https://www.postman.com/) is recommended to test the endpoints
+
+## Endpoints
+
+### Get all cards
+```
+/cards [GET]
+```
+
+### Delete a card
+```
+/cards/{card_id} [DELETE]
+```
+
+### Add a card
+```
+/cards [POST] (Add card's JSON to body)
+```
+
+### Update cards
+```
+/cards [PATCH] (Add cards' JSON to body)
+```
+
 ## Install
 
 1. Install [Python3](https://www.python.org/downloads/)
