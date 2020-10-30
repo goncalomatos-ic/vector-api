@@ -5,4 +5,4 @@ alembic upgrade head
 
 echo "Starting server..."
 
-uvicorn app.main:app
+uvicorn --host 0.0.0.0 app.main:app
